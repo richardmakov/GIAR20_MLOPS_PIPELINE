@@ -71,3 +71,11 @@ resource "aws_lambda_function_url" "iris_classifier" {
     max_age           = 86400
   }
 }
+
+resource "aws_lambda_permission" "allow_public_url" {
+  statement_id           = "AllowPublicAccessFromFunctionURL"
+  action                 = "lambda:InvokeFunctionUrl"
+  function_name          = aws_lambda_function.iris_classifier.function_name
+  principal              = "*"
+  function_url_auth_type = "NONE"
+}
