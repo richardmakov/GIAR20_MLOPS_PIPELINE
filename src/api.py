@@ -2,8 +2,10 @@ import joblib
 import numpy as np
 from fastapi import FastAPI
 from pydantic import BaseModel
+from mangum import Mangum
 
 app = FastAPI(title="Iris Classifier API", version="1.0.0")
+handler = Mangum(app, lifespan="off")
 
 model = joblib.load("models/random_forest_model.joblib")
 
