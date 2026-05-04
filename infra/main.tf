@@ -1,3 +1,22 @@
+resource "aws_ecr_repository" "iris_classifier" {
+  name                 = var.ecr_repository_name
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+
+  encryption_configuration {
+    encryption_type = "AES256"
+  }
+
+  tags = {
+    Project     = var.project_name
+    ManagedBy   = "Terraform"
+    Environment = "production"
+  }
+}
+
 resource "aws_iam_role" "lambda_exec" {
   name = "${var.project_name}-lambda-exec-role"
 
@@ -40,7 +59,6 @@ resource "aws_lambda_function" "iris_classifier" {
     Environment = "production"
   }
 }
-
 resource "aws_lambda_function_url" "iris_classifier" {
   function_name      = aws_lambda_function.iris_classifier.function_name
   authorization_type = "NONE"
